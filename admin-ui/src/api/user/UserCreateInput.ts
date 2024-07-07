@@ -1,4 +1,5 @@
 import { InputJsonValue } from "../../types";
+import { DietCreateNestedManyWithoutUsersInput } from "./DietCreateNestedManyWithoutUsersInput";
 
 export type UserCreateInput = {
   firstName?: string | null;
@@ -7,4 +8,5 @@ export type UserCreateInput = {
   email?: string | null;
   password: string;
   roles: InputJsonValue;
+  diets?: DietCreateNestedManyWithoutUsersInput;
 };

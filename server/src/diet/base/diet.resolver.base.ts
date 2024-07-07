@@ -19,32 +19,31 @@ import { GqlDefaultAuthGuard } from "../../auth/gqlDefaultAuth.guard";
 import * as common from "@nestjs/common";
 import { AclFilterResponseInterceptor } from "../../interceptors/aclFilterResponse.interceptor";
 import { AclValidateRequestInterceptor } from "../../interceptors/aclValidateRequest.interceptor";
-import { User } from "./User";
-import { UserCountArgs } from "./UserCountArgs";
-import { UserFindManyArgs } from "./UserFindManyArgs";
-import { UserFindUniqueArgs } from "./UserFindUniqueArgs";
-import { CreateUserArgs } from "./CreateUserArgs";
-import { UpdateUserArgs } from "./UpdateUserArgs";
-import { DeleteUserArgs } from "./DeleteUserArgs";
-import { DietFindManyArgs } from "../../diet/base/DietFindManyArgs";
-import { Diet } from "../../diet/base/Diet";
-import { UserService } from "../user.service";
+import { Diet } from "./Diet";
+import { DietCountArgs } from "./DietCountArgs";
+import { DietFindManyArgs } from "./DietFindManyArgs";
+import { DietFindUniqueArgs } from "./DietFindUniqueArgs";
+import { CreateDietArgs } from "./CreateDietArgs";
+import { UpdateDietArgs } from "./UpdateDietArgs";
+import { DeleteDietArgs } from "./DeleteDietArgs";
+import { User } from "../../user/base/User";
+import { DietService } from "../diet.service";
 @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
-@graphql.Resolver(() => User)
-export class UserResolverBase {
+@graphql.Resolver(() => Diet)
+export class DietResolverBase {
   constructor(
-    protected readonly service: UserService,
+    protected readonly service: DietService,
     protected readonly rolesBuilder: nestAccessControl.RolesBuilder
   ) {}
 
   @graphql.Query(() => MetaQueryPayload)
   @nestAccessControl.UseRoles({
-    resource: "User",
+    resource: "Diet",
     action: "read",
     possession: "any",
   })
-  async _usersMeta(
-    @graphql.Args() args: UserCountArgs
+  async _dietsMeta(
+    @graphql.Args() args: DietCountArgs
   ): Promise<MetaQueryPayload> {
     const result = await this.service.count(args);
     return {
@@ -53,25 +52,25 @@ export class UserResolverBase {
   }
 
   @common.UseInterceptors(AclFilterResponseInterceptor)
-  @graphql.Query(() => [User])
+  @graphql.Query(() => [Diet])
   @nestAccessControl.UseRoles({
-    resource: "User",
+    resource: "Diet",
     action: "read",
     possession: "any",
   })
-  async users(@graphql.Args() args: UserFindManyArgs): Promise<User[]> {
-    return this.service.users(args);
+  async diets(@graphql.Args() args: DietFindManyArgs): Promise<Diet[]> {
+    return this.service.diets(args);
   }
 
   @common.UseInterceptors(AclFilterResponseInterceptor)
-  @graphql.Query(() => User, { nullable: true })
+  @graphql.Query(() => Diet, { nullable: true })
   @nestAccessControl.UseRoles({
-    resource: "User",
+    resource: "Diet",
     action: "read",
     possession: "own",
   })
-  async user(@graphql.Args() args: UserFindUniqueArgs): Promise<User | null> {
-    const result = await this.service.user(args);
+  async diet(@graphql.Args() args: DietFindUniqueArgs): Promise<Diet | null> {
+    const result = await this.service.diet(args);
     if (result === null) {
       return null;
     }
@@ -79,31 +78,47 @@ export class UserResolverBase {
   }
 
   @common.UseInterceptors(AclValidateRequestInterceptor)
-  @graphql.Mutation(() => User)
+  @graphql.Mutation(() => Diet)
   @nestAccessControl.UseRoles({
-    resource: "User",
+    resource: "Diet",
     action: "create",
     possession: "any",
   })
-  async createUser(@graphql.Args() args: CreateUserArgs): Promise<User> {
-    return await this.service.createUser({
+  async createDiet(@graphql.Args() args: CreateDietArgs): Promise<Diet> {
+    return await this.service.createDiet({
       ...args,
-      data: args.data,
+      data: {
+        ...args.data,
+
+        user: args.data.user
+          ? {
+              connect: args.data.user,
+            }
+          : undefined,
+      },
     });
   }
 
   @common.UseInterceptors(AclValidateRequestInterceptor)
-  @graphql.Mutation(() => User)
+  @graphql.Mutation(() => Diet)
   @nestAccessControl.UseRoles({
-    resource: "User",
+    resource: "Diet",
     action: "update",
     possession: "any",
   })
-  async updateUser(@graphql.Args() args: UpdateUserArgs): Promise<User | null> {
+  async updateDiet(@graphql.Args() args: UpdateDietArgs): Promise<Diet | null> {
     try {
-      return await this.service.updateUser({
+      return await this.service.updateDiet({
         ...args,
-        data: args.data,
+        data: {
+          ...args.data,
+
+          user: args.data.user
+            ? {
+                connect: args.data.user,
+              }
+            : undefined,
+        },
       });
     } catch (error) {
       if (isRecordNotFoundError(error)) {
@@ -115,15 +130,15 @@ export class UserResolverBase {
     }
   }
 
-  @graphql.Mutation(() => User)
+  @graphql.Mutation(() => Diet)
   @nestAccessControl.UseRoles({
-    resource: "User",
+    resource: "Diet",
     action: "delete",
     possession: "any",
   })
-  async deleteUser(@graphql.Args() args: DeleteUserArgs): Promise<User | null> {
+  async deleteDiet(@graphql.Args() args: DeleteDietArgs): Promise<Diet | null> {
     try {
-      return await this.service.deleteUser(args);
+      return await this.service.deleteDiet(args);
     } catch (error) {
       if (isRecordNotFoundError(error)) {
         throw new GraphQLError(
@@ -135,22 +150,21 @@ export class UserResolverBase {
   }
 
   @common.UseInterceptors(AclFilterResponseInterceptor)
-  @graphql.ResolveField(() => [Diet], { name: "diets" })
+  @graphql.ResolveField(() => User, {
+    nullable: true,
+    name: "user",
+  })
   @nestAccessControl.UseRoles({
-    resource: "Diet",
+    resource: "User",
     action: "read",
     possession: "any",
   })
-  async findDiets(
-    @graphql.Parent() parent: User,
-    @graphql.Args() args: DietFindManyArgs
-  ): Promise<Diet[]> {
-    const results = await this.service.findDiets(parent.id, args);
+  async getUser(@graphql.Parent() parent: Diet): Promise<User | null> {
+    const result = await this.service.getUser(parent.id);
 
-    if (!results) {
-      return [];
+    if (!result) {
+      return null;
     }
-
-    return results;
+    return result;
   }
 }

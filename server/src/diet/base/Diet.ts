@@ -19,13 +19,10 @@ import {
   ValidateNested,
 } from "class-validator";
 import { Type } from "class-transformer";
-import { IsJSONValue } from "../../validators";
-import { GraphQLJSON } from "graphql-type-json";
-import { JsonValue } from "type-fest";
-import { Diet } from "../../diet/base/Diet";
+import { User } from "../../user/base/User";
 
 @ObjectType()
-class User {
+class Diet {
   @ApiProperty({
     required: true,
     type: String,
@@ -55,59 +52,21 @@ class User {
     type: String,
   })
   @IsString()
-  @MaxLength(256)
+  @MaxLength(1000)
   @IsOptional()
   @Field(() => String, {
     nullable: true,
   })
-  firstName!: string | null;
+  filePath!: string | null;
 
   @ApiProperty({
     required: false,
-    type: String,
-  })
-  @IsString()
-  @MaxLength(256)
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  lastName!: string | null;
-
-  @ApiProperty({
-    required: true,
-    type: String,
-  })
-  @IsString()
-  @Field(() => String)
-  username!: string;
-
-  @ApiProperty({
-    required: false,
-    type: String,
-  })
-  @IsString()
-  @IsOptional()
-  @Field(() => String, {
-    nullable: true,
-  })
-  email!: string | null;
-
-  @ApiProperty({
-    required: true,
-  })
-  @IsJSONValue()
-  @Field(() => GraphQLJSON)
-  roles!: JsonValue;
-
-  @ApiProperty({
-    required: false,
-    type: () => [Diet],
+    type: () => User,
   })
   @ValidateNested()
-  @Type(() => Diet)
+  @Type(() => User)
   @IsOptional()
-  diets?: Array<Diet>;
+  user?: User | null;
 }
 
-export { User as User };
+export { Diet as Diet };

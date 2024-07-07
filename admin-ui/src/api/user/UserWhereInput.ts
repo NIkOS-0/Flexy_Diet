@@ -1,5 +1,6 @@
 import { StringFilter } from "../../util/StringFilter";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
+import { DietListRelationFilter } from "../diet/DietListRelationFilter";
 
 export type UserWhereInput = {
   id?: StringFilter;
@@ -7,4 +8,5 @@ export type UserWhereInput = {
   lastName?: StringNullableFilter;
   username?: StringFilter;
   email?: StringNullableFilter;
+  diets?: DietListRelationFilter;
 };

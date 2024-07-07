@@ -17,4 +17,14 @@ model User {
   email     String?  @unique
   password  String
   roles     Json
+  diets     Diet[]
+}
+
+model Diet {
+  id        String   @id @default(cuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  filePath  String?
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?
 }

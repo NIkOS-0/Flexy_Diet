@@ -1,7 +1,5 @@
 # Flexy_Diet
 
-# Flexy_Diet
-
 ## Project Overview
 
 Flexy_Diet is a personalized diet generation platform designed to cater to individuals with various health conditions and dietary needs. Our mission is to provide accessible, tailored meal plans that aid in improving and maintaining health.

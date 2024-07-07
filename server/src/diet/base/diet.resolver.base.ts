@@ -27,6 +27,8 @@ import { CreateDietArgs } from "./CreateDietArgs";
 import { UpdateDietArgs } from "./UpdateDietArgs";
 import { DeleteDietArgs } from "./DeleteDietArgs";
 import { User } from "../../user/base/User";
+import { DietCreateInput } from "./DietCreateInput";
+import { DietUpdateInput } from "./DietUpdateInput";
 import { DietService } from "../diet.service";
 @common.UseGuards(GqlDefaultAuthGuard, gqlACGuard.GqlACGuard)
 @graphql.Resolver(() => Diet)
@@ -166,5 +168,37 @@ export class DietResolverBase {
       return null;
     }
     return result;
+  }
+
+  @graphql.Mutation(() => Diet)
+  async CreateDiet(
+    @graphql.Args()
+    args: DietCreateInput
+  ): Promise<Diet> {
+    return this.service.CreateDiet(args);
+  }
+
+  @graphql.Mutation(() => Diet)
+  async DeleteDiet(
+    @graphql.Args()
+    args: DeleteDietArgs
+  ): Promise<Diet> {
+    return this.service.DeleteDiet(args);
+  }
+
+  @graphql.Query(() => Diet)
+  async RetrieveDiet(
+    @graphql.Args()
+    args: DietCountArgs
+  ): Promise<Diet> {
+    return this.service.RetrieveDiet(args);
+  }
+
+  @graphql.Mutation(() => Diet)
+  async UpdateDiet(
+    @graphql.Args()
+    args: DietUpdateInput
+  ): Promise<Diet> {
+    return this.service.UpdateDiet(args);
   }
 }

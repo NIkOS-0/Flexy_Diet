@@ -8,6 +8,8 @@ import {
   PasswordInput,
   SelectArrayInput,
   ReferenceArrayInput,
+  SelectInput,
+  NumberInput,
 } from "react-admin";
 
 import { DietTitle } from "../diet/DietTitle";
@@ -36,6 +38,15 @@ export const UserEdit = (props: EditProps): React.ReactElement => {
         >
           <SelectArrayInput optionText={DietTitle} />
         </ReferenceArrayInput>
+        <SelectInput
+          source="subscriptionLevel"
+          label="subscriptionLevel"
+          choices={[{ label: "Option 1", value: "Option1" }]}
+          optionText="label"
+          allowEmpty
+          optionValue="value"
+        />
+        <NumberInput step={1} label="monthlyPoints" source="monthlyPoints" />
       </SimpleForm>
     </Edit>
   );

@@ -9,4 +9,6 @@ export type UserCreateInput = {
   password: string;
   roles: InputJsonValue;
   diets?: DietCreateNestedManyWithoutUsersInput;
+  subscriptionLevel?: "Option1" | null;
+  monthlyPoints?: number | null;
 };

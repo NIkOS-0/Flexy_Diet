@@ -25,6 +25,8 @@ export const UserShow = (props: ShowProps): React.ReactElement => {
         <TextField label="Username" source="username" />
         <TextField label="Email" source="email" />
         <TextField label="Roles" source="roles" />
+        <TextField label="subscriptionLevel" source="subscriptionLevel" />
+        <TextField label="monthlyPoints" source="monthlyPoints" />
         <ReferenceManyField reference="Diet" target="userId" label="Diets">
           <Datagrid rowClick="show">
             <TextField label="ID" source="id" />

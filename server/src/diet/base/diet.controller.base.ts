@@ -230,4 +230,72 @@ export class DietControllerBase {
       throw error;
     }
   }
+
+  @common.Post("/create")
+  @swagger.ApiOkResponse({
+    type: Diet,
+  })
+  @swagger.ApiNotFoundResponse({
+    type: errors.NotFoundException,
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
+  async CreateDiet(
+    @common.Body()
+    body: DietUpdateInput
+  ): Promise<Diet> {
+    return this.service.CreateDiet(body);
+  }
+
+  @common.Delete("/:id")
+  @swagger.ApiOkResponse({
+    type: Diet,
+  })
+  @swagger.ApiNotFoundResponse({
+    type: errors.NotFoundException,
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
+  async DeleteDiet(
+    @common.Body()
+    body: DietUpdateInput
+  ): Promise<Diet> {
+    return this.service.DeleteDiet(body);
+  }
+
+  @common.Get("/:id")
+  @swagger.ApiOkResponse({
+    type: Diet,
+  })
+  @swagger.ApiNotFoundResponse({
+    type: errors.NotFoundException,
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
+  async RetrieveDiet(
+    @common.Body()
+    body: DietUpdateInput
+  ): Promise<Diet> {
+    return this.service.RetrieveDiet(body);
+  }
+
+  @common.Patch("/:id")
+  @swagger.ApiOkResponse({
+    type: Diet,
+  })
+  @swagger.ApiNotFoundResponse({
+    type: errors.NotFoundException,
+  })
+  @swagger.ApiForbiddenResponse({
+    type: errors.ForbiddenException,
+  })
+  async UpdateDiet(
+    @common.Body()
+    body: DietUpdateInput
+  ): Promise<Diet> {
+    return this.service.UpdateDiet(body);
+  }
 }

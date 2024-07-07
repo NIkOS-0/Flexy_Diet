@@ -11,4 +11,6 @@ export type User = {
   email: string | null;
   roles: JsonValue;
   diets?: Array<Diet>;
+  subscriptionLevel?: "Option1" | null;
+  monthlyPoints: number | null;
 };

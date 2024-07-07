@@ -11,6 +11,11 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { PrismaService } from "../../prisma/prisma.service";
 import { Prisma, Diet as PrismaDiet, User as PrismaUser } from "@prisma/client";
+import { DietCreateInput } from "./DietCreateInput";
+import { Diet } from "./Diet";
+import { DeleteDietArgs } from "./DeleteDietArgs";
+import { DietCountArgs } from "./DietCountArgs";
+import { DietUpdateInput } from "./DietUpdateInput";
 
 export class DietServiceBase {
   constructor(protected readonly prisma: PrismaService) {}
@@ -41,5 +46,17 @@ export class DietServiceBase {
         where: { id: parentId },
       })
       .user();
+  }
+  async CreateDiet(args: DietCreateInput): Promise<Diet> {
+    throw new Error("Not implemented");
+  }
+  async DeleteDiet(args: DeleteDietArgs): Promise<Diet> {
+    throw new Error("Not implemented");
+  }
+  async RetrieveDiet(args: DietCountArgs): Promise<Diet> {
+    throw new Error("Not implemented");
+  }
+  async UpdateDiet(args: DietUpdateInput): Promise<Diet> {
+    throw new Error("Not implemented");
   }
 }

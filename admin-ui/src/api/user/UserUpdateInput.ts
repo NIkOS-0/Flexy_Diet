@@ -9,4 +9,6 @@ export type UserUpdateInput = {
   password?: string;
   roles?: InputJsonValue;
   diets?: DietUpdateManyWithoutUsersInput;
+  subscriptionLevel?: "Option1" | null;
+  monthlyPoints?: number | null;
 };

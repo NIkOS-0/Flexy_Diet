@@ -60,6 +60,8 @@ export class UserControllerBase {
         username: true,
         email: true,
         roles: true,
+        subscriptionLevel: true,
+        monthlyPoints: true,
       },
     });
   }
@@ -89,6 +91,8 @@ export class UserControllerBase {
         username: true,
         email: true,
         roles: true,
+        subscriptionLevel: true,
+        monthlyPoints: true,
       },
     });
   }
@@ -119,6 +123,8 @@ export class UserControllerBase {
         username: true,
         email: true,
         roles: true,
+        subscriptionLevel: true,
+        monthlyPoints: true,
       },
     });
     if (result === null) {
@@ -158,6 +164,8 @@ export class UserControllerBase {
           username: true,
           email: true,
           roles: true,
+          subscriptionLevel: true,
+          monthlyPoints: true,
         },
       });
     } catch (error) {
@@ -196,6 +204,8 @@ export class UserControllerBase {
           username: true,
           email: true,
           roles: true,
+          subscriptionLevel: true,
+          monthlyPoints: true,
         },
       });
     } catch (error) {

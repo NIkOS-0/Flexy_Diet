@@ -16,12 +16,17 @@ import {
   MaxLength,
   IsOptional,
   ValidateNested,
+  IsEnum,
+  IsInt,
+  Min,
+  Max,
 } from "class-validator";
 import { IsJSONValue } from "../../validators";
 import { GraphQLJSON } from "graphql-type-json";
 import { InputJsonValue } from "../../types";
 import { DietUpdateManyWithoutUsersInput } from "./DietUpdateManyWithoutUsersInput";
 import { Type } from "class-transformer";
+import { EnumUserSubscriptionLevel } from "./EnumUserSubscriptionLevel";
 
 @InputType()
 class UserUpdateInput {
@@ -103,6 +108,30 @@ class UserUpdateInput {
     nullable: true,
   })
   diets?: DietUpdateManyWithoutUsersInput;
+
+  @ApiProperty({
+    required: false,
+    enum: EnumUserSubscriptionLevel,
+  })
+  @IsEnum(EnumUserSubscriptionLevel)
+  @IsOptional()
+  @Field(() => EnumUserSubscriptionLevel, {
+    nullable: true,
+  })
+  subscriptionLevel?: "Option1" | null;
+
+  @ApiProperty({
+    required: false,
+    type: Number,
+  })
+  @IsInt()
+  @Min(-999999999)
+  @Max(999999999)
+  @IsOptional()
+  @Field(() => Number, {
+    nullable: true,
+  })
+  monthlyPoints?: number | null;
 }
 
 export { UserUpdateInput as UserUpdateInput };

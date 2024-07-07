@@ -117,6 +117,28 @@ class UserOrderByInput {
     nullable: true,
   })
   roles?: SortOrder;
+
+  @ApiProperty({
+    required: false,
+    enum: ["asc", "desc"],
+  })
+  @IsOptional()
+  @IsEnum(SortOrder)
+  @Field(() => SortOrder, {
+    nullable: true,
+  })
+  subscriptionLevel?: SortOrder;
+
+  @ApiProperty({
+    required: false,
+    enum: ["asc", "desc"],
+  })
+  @IsOptional()
+  @IsEnum(SortOrder)
+  @Field(() => SortOrder, {
+    nullable: true,
+  })
+  monthlyPoints?: SortOrder;
 }
 
 export { UserOrderByInput as UserOrderByInput };

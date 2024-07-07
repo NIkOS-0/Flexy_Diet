@@ -26,6 +26,9 @@ import { User } from "./User";
 import { UserFindManyArgs } from "./UserFindManyArgs";
 import { UserWhereUniqueInput } from "./UserWhereUniqueInput";
 import { UserUpdateInput } from "./UserUpdateInput";
+import { DietFindManyArgs } from "../../diet/base/DietFindManyArgs";
+import { Diet } from "../../diet/base/Diet";
+import { DietWhereUniqueInput } from "../../diet/base/DietWhereUniqueInput";
 
 @swagger.ApiBearerAuth()
 @common.UseGuards(defaultAuthGuard.DefaultAuthGuard, nestAccessControl.ACGuard)
@@ -57,6 +60,8 @@ export class UserControllerBase {
         username: true,
         email: true,
         roles: true,
+        subscriptionLevel: true,
+        monthlyPoints: true,
       },
     });
   }
@@ -86,6 +91,8 @@ export class UserControllerBase {
         username: true,
         email: true,
         roles: true,
+        subscriptionLevel: true,
+        monthlyPoints: true,
       },
     });
   }
@@ -116,6 +123,8 @@ export class UserControllerBase {
         username: true,
         email: true,
         roles: true,
+        subscriptionLevel: true,
+        monthlyPoints: true,
       },
     });
     if (result === null) {
@@ -155,6 +164,8 @@ export class UserControllerBase {
           username: true,
           email: true,
           roles: true,
+          subscriptionLevel: true,
+          monthlyPoints: true,
         },
       });
     } catch (error) {
@@ -193,6 +204,8 @@ export class UserControllerBase {
           username: true,
           email: true,
           roles: true,
+          subscriptionLevel: true,
+          monthlyPoints: true,
         },
       });
     } catch (error) {
@@ -203,5 +216,107 @@ export class UserControllerBase {
       }
       throw error;
     }
+  }
+
+  @common.UseInterceptors(AclFilterResponseInterceptor)
+  @common.Get("/:id/diets")
+  @ApiNestedQuery(DietFindManyArgs)
+  @nestAccessControl.UseRoles({
+    resource: "Diet",
+    action: "read",
+    possession: "any",
+  })
+  async findDiets(
+    @common.Req() request: Request,
+    @common.Param() params: UserWhereUniqueInput
+  ): Promise<Diet[]> {
+    const query = plainToClass(DietFindManyArgs, request.query);
+    const results = await this.service.findDiets(params.id, {
+      ...query,
+      select: {
+        id: true,
+        createdAt: true,
+        updatedAt: true,
+        filePath: true,
+
+        user: {
+          select: {
+            id: true,
+          },
+        },
+      },
+    });
+    if (results === null) {
+      throw new errors.NotFoundException(
+        `No resource was found for ${JSON.stringify(params)}`
+      );
+    }
+    return results;
+  }
+
+  @common.Post("/:id/diets")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async connectDiets(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: DietWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      diets: {
+        connect: body,
+      },
+    };
+    await this.service.updateUser({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Patch("/:id/diets")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async updateDiets(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: DietWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      diets: {
+        set: body,
+      },
+    };
+    await this.service.updateUser({
+      where: params,
+      data,
+      select: { id: true },
+    });
+  }
+
+  @common.Delete("/:id/diets")
+  @nestAccessControl.UseRoles({
+    resource: "User",
+    action: "update",
+    possession: "any",
+  })
+  async disconnectDiets(
+    @common.Param() params: UserWhereUniqueInput,
+    @common.Body() body: DietWhereUniqueInput[]
+  ): Promise<void> {
+    const data = {
+      diets: {
+        disconnect: body,
+      },
+    };
+    await this.service.updateUser({
+      where: params,
+      data,
+      select: { id: true },
+    });
   }
 }

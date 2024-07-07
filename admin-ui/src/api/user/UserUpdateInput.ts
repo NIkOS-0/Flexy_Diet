@@ -1,4 +1,5 @@
 import { InputJsonValue } from "../../types";
+import { DietUpdateManyWithoutUsersInput } from "./DietUpdateManyWithoutUsersInput";
 
 export type UserUpdateInput = {
   firstName?: string | null;
@@ -7,4 +8,7 @@ export type UserUpdateInput = {
   email?: string | null;
   password?: string;
   roles?: InputJsonValue;
+  diets?: DietUpdateManyWithoutUsersInput;
+  subscriptionLevel?: "Option1" | null;
+  monthlyPoints?: number | null;
 };

@@ -13,8 +13,11 @@ import { InputType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
 import { StringFilter } from "../../util/StringFilter";
 import { Type } from "class-transformer";
-import { IsOptional } from "class-validator";
+import { IsOptional, ValidateNested, IsEnum } from "class-validator";
 import { StringNullableFilter } from "../../util/StringNullableFilter";
+import { DietListRelationFilter } from "../../diet/base/DietListRelationFilter";
+import { EnumUserSubscriptionLevel } from "./EnumUserSubscriptionLevel";
+import { IntNullableFilter } from "../../util/IntNullableFilter";
 
 @InputType()
 class UserWhereInput {
@@ -72,6 +75,40 @@ class UserWhereInput {
     nullable: true,
   })
   email?: StringNullableFilter;
+
+  @ApiProperty({
+    required: false,
+    type: () => DietListRelationFilter,
+  })
+  @ValidateNested()
+  @Type(() => DietListRelationFilter)
+  @IsOptional()
+  @Field(() => DietListRelationFilter, {
+    nullable: true,
+  })
+  diets?: DietListRelationFilter;
+
+  @ApiProperty({
+    required: false,
+    enum: EnumUserSubscriptionLevel,
+  })
+  @IsEnum(EnumUserSubscriptionLevel)
+  @IsOptional()
+  @Field(() => EnumUserSubscriptionLevel, {
+    nullable: true,
+  })
+  subscriptionLevel?: "Option1";
+
+  @ApiProperty({
+    required: false,
+    type: IntNullableFilter,
+  })
+  @Type(() => IntNullableFilter)
+  @IsOptional()
+  @Field(() => IntNullableFilter, {
+    nullable: true,
+  })
+  monthlyPoints?: IntNullableFilter;
 }
 
 export { UserWhereInput as UserWhereInput };

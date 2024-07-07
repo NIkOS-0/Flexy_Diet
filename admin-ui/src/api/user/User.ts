@@ -1,4 +1,5 @@
 import { JsonValue } from "type-fest";
+import { Diet } from "../diet/Diet";
 
 export type User = {
   id: string;
@@ -9,4 +10,7 @@ export type User = {
   username: string;
   email: string | null;
   roles: JsonValue;
+  diets?: Array<Diet>;
+  subscriptionLevel?: "Option1" | null;
+  monthlyPoints: number | null;
 };

@@ -2,6 +2,7 @@ import { Module } from "@nestjs/common";
 import { CacheModule } from "@nestjs/cache-manager";
 import { redisStore } from "cache-manager-ioredis-yet";
 import { UserModule } from "./user/user.module";
+import { DietModule } from "./diet/diet.module";
 import { HealthModule } from "./health/health.module";
 import { PrismaModule } from "./prisma/prisma.module";
 import { SecretsManagerModule } from "./providers/secrets/secretsManager.module";
@@ -23,6 +24,7 @@ import { AuthModule } from "./auth/auth.module";
     AuthModule,
     LoggerModule,
     UserModule,
+    DietModule,
     HealthModule,
     PrismaModule,
     SecretsManagerModule,

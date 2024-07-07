@@ -11,11 +11,25 @@ https://docs.amplication.com/how-to/custom-code
   */
 import { ObjectType, Field } from "@nestjs/graphql";
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsDate, MaxLength, IsOptional } from "class-validator";
+
+import {
+  IsString,
+  IsDate,
+  MaxLength,
+  IsOptional,
+  ValidateNested,
+  IsEnum,
+  IsInt,
+  Min,
+  Max,
+} from "class-validator";
+
 import { Type } from "class-transformer";
 import { IsJSONValue } from "../../validators";
 import { GraphQLJSON } from "graphql-type-json";
 import { JsonValue } from "type-fest";
+import { Diet } from "../../diet/base/Diet";
+import { EnumUserSubscriptionLevel } from "./EnumUserSubscriptionLevel";
 
 @ObjectType()
 class User {
@@ -92,6 +106,39 @@ class User {
   @IsJSONValue()
   @Field(() => GraphQLJSON)
   roles!: JsonValue;
+
+  @ApiProperty({
+    required: false,
+    type: () => [Diet],
+  })
+  @ValidateNested()
+  @Type(() => Diet)
+  @IsOptional()
+  diets?: Array<Diet>;
+
+  @ApiProperty({
+    required: false,
+    enum: EnumUserSubscriptionLevel,
+  })
+  @IsEnum(EnumUserSubscriptionLevel)
+  @IsOptional()
+  @Field(() => EnumUserSubscriptionLevel, {
+    nullable: true,
+  })
+  subscriptionLevel?: "Option1" | null;
+
+  @ApiProperty({
+    required: false,
+    type: Number,
+  })
+  @IsInt()
+  @Min(-999999999)
+  @Max(999999999)
+  @IsOptional()
+  @Field(() => Number, {
+    nullable: true,
+  })
+  monthlyPoints!: number | null;
 }
 
 export { User as User };
